@@ -117,12 +117,16 @@ internal class Program
                     }
                     else
                     {
-                        foreach (var disponivel in livrosdisponiveis)
+                        var disponivel = livrosdisponiveis.ToList();
+                        disponivel.ForEach(item => BsonSerializer.Deserialize<Books>(item));
+                        
+                        //var livro = BsonSerializer.Deserialize<Books>(disponivel);
+                        /*foreach (var disponivel in livrosdisponiveis)
                         {
                             var livro = BsonSerializer.Deserialize<Books>(disponivel);
                             Console.WriteLine(livro.ToString());
                             Console.WriteLine();
-                        }
+                        }*/
                     }
                     break;
 
@@ -130,12 +134,15 @@ internal class Program
 
                     var listaLivrosEmprestados = collectionEmprestado.Find(new BsonDocument()).ToList();
 
-                    foreach (var emprestado in listaLivrosEmprestados)
+                    var listaEmprestado = listaLivrosEmprestados.ToList();
+                    listaEmprestado.ForEach(item => BsonSerializer.Deserialize<Books>(item));
+
+                    /*foreach (var emprestado in listaLivrosEmprestados)
                     {
                         var livroEmprestado = BsonSerializer.Deserialize<Books>(emprestado);
                         Console.WriteLine(livroEmprestado.ToString());
                         Console.WriteLine();
-                    }
+                    }*/
                     break;
 
                 case 6:
@@ -143,8 +150,16 @@ internal class Program
                     var listaLivrosLeitura = collectionLivroLeitura.Find(new BsonDocument()).ToList();
                     
                     var lista = listaLivrosLeitura.ToList();
-                    lista.ForEach(item => Console.WriteLine(item));
 
+                    if (lista == null)
+                    {
+                        Console.WriteLine("Não há livros separados para leitura!");
+                        Thread.Sleep(2000);
+                    }
+                    else
+                    {
+                        lista.ForEach(item => Console.WriteLine(item));
+                    }
                     break;
 
                 case 7:
