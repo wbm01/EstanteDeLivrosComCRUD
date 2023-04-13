@@ -136,7 +136,7 @@ internal class Program
 
                     var listaEmprestado = listaLivrosEmprestados.ToList();
 
-                    if (listaEmprestado == null)
+                    if (listaEmprestado.Count == 0)
                     {
                         Console.WriteLine("Não há livros emprestados!");
                         Thread.Sleep(2000);
@@ -146,7 +146,7 @@ internal class Program
                         listaEmprestado.ForEach(item => Console.WriteLine(BsonSerializer.Deserialize<Books>(item.ToString())));
                         Console.WriteLine();
 
-                        Console.Write("\nDeseja devolver esse livro? (S ou N): ");
+                        /*Console.Write("\nDeseja devolver esse livro? (S ou N): ");
                         var devolucao = Console.ReadLine().ToUpper();
 
                         if(devolucao == "S")
@@ -157,12 +157,12 @@ internal class Program
                         }
                     }
 
-                    /*foreach (var emprestado in listaLivrosEmprestados)
+                    foreach (var emprestado in listaLivrosEmprestados)
                     {
                         var livroEmprestado = BsonSerializer.Deserialize<Books>(emprestado);
                         Console.WriteLine(livroEmprestado.ToString());
-                        Console.WriteLine();
-                    }*/
+                        Console.WriteLine();*/
+                    }
                     break;
 
                 case 6:
