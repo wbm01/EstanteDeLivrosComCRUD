@@ -118,8 +118,8 @@ internal class Program
                     else
                     {
                         var disponivel = livrosdisponiveis.ToList();
-                        disponivel.ForEach(item => BsonSerializer.Deserialize<Books>(item));
-                        
+                        disponivel.ForEach(item => Console.WriteLine(BsonSerializer.Deserialize<Books>(item.ToString())));
+
                         //var livro = BsonSerializer.Deserialize<Books>(disponivel);
                         /*foreach (var disponivel in livrosdisponiveis)
                         {
@@ -135,7 +135,27 @@ internal class Program
                     var listaLivrosEmprestados = collectionEmprestado.Find(new BsonDocument()).ToList();
 
                     var listaEmprestado = listaLivrosEmprestados.ToList();
-                    listaEmprestado.ForEach(item => BsonSerializer.Deserialize<Books>(item));
+
+                    if (listaEmprestado == null)
+                    {
+                        Console.WriteLine("Não há livros emprestados!");
+                        Thread.Sleep(2000);
+                    }
+                    else
+                    {
+                        listaEmprestado.ForEach(item => Console.WriteLine(BsonSerializer.Deserialize<Books>(item.ToString())));
+                        Console.WriteLine();
+
+                        Console.Write("\nDeseja devolver esse livro? (S ou N): ");
+                        var devolucao = Console.ReadLine().ToUpper();
+
+                        if(devolucao == "S")
+                        {
+                            var devolucaoLivro = collectionEmprestado.Find(Builders<BsonDocument>.Filter.Eq("Título", item)).FirstOrDefault();
+                            collectionLivro.InsertOne(devolucaoLivro);
+                            //collectionEmprestado.Find(Builders<BsonDocument>.Filter.Eq("Título", item);
+                        }
+                    }
 
                     /*foreach (var emprestado in listaLivrosEmprestados)
                     {
@@ -158,7 +178,8 @@ internal class Program
                     }
                     else
                     {
-                        lista.ForEach(item => Console.WriteLine(item));
+                        lista.ForEach(item => Console.WriteLine(BsonSerializer.Deserialize<Books>(item.ToString())));
+                        Console.WriteLine();
                     }
                     break;
 
