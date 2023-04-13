@@ -159,10 +159,12 @@ internal class Program
                             {
                                 collectionLivro.InsertOne(emprestado);
                                 collectionEmprestado.FindOneAndDelete(emprestado);
+                                Console.WriteLine("Livro devolvido com sucesso!");
+                                Thread.Sleep(2000);
+                                Console.Clear();
                             }
 
                         }
-
                         Console.WriteLine();
                         Thread.Sleep(1000);
                         Console.Clear();
@@ -183,7 +185,7 @@ internal class Program
                     
                     var lista = listaLivrosLeitura.ToList();
 
-                    if (lista == null)
+                    if (lista.Count == 0)
                     {
                         Console.WriteLine("Não há livros separados para leitura!");
                         Thread.Sleep(2000);
@@ -191,8 +193,31 @@ internal class Program
                     }
                     else
                     {
-                        lista.ForEach(item => Console.WriteLine(BsonSerializer.Deserialize<Books>(item.ToString())));
+                        foreach (var leitura in listaLivrosLeitura)
+                        {
+                            var livroLeitura = BsonSerializer.Deserialize<Books>(leitura);
+                            Console.WriteLine(livroLeitura.ToString());
+                            Console.WriteLine();
+
+                            Console.Write("\nDeseja concluir a leitura desse livro? (S ou N): ");
+                            var concluir = Console.ReadLine().ToUpper();
+
+                            if (concluir == "S")
+                            {
+                                collectionLivro.InsertOne(leitura);
+                                collectionLivroLeitura.FindOneAndDelete(leitura);
+                                Console.WriteLine("Livro finalizado com sucesso!");
+                                Thread.Sleep(2000);
+                                Console.Clear();
+                            }
+
+                        }
                         Console.WriteLine();
+                        Thread.Sleep(1000);
+                        Console.Clear();
+
+                        //lista.ForEach(item => Console.WriteLine(BsonSerializer.Deserialize<Books>(item.ToString())));
+                        //Console.WriteLine();
                     }
                     break;
 
