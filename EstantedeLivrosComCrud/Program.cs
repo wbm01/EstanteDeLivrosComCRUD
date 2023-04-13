@@ -74,11 +74,14 @@ internal class Program
                     catch (Exception ex)
                     {
                         Console.WriteLine(ex.Message);
+                        Thread.Sleep(2000);
+                        Console.Clear();
                     }
                     finally
                     {
                         Console.WriteLine("\nLivro emprestado com sucesso!");
                         Thread.Sleep(2000);
+                        Console.Clear();
                     }
                     break;
 
@@ -98,11 +101,13 @@ internal class Program
                     {
                         Console.WriteLine(ex.Message);
                         Thread.Sleep(2000);
+                        Console.Clear();
                     }
                     finally
                     {
                         Console.WriteLine("\nLivro separado com sucesso!");
                         Thread.Sleep(2000);
+                        Console.Clear();
                     }
                     break;
 
@@ -110,15 +115,17 @@ internal class Program
 
                     var livrosdisponiveis = collectionLivro.Find(new BsonDocument()).ToList();
 
-                    if (livrosdisponiveis == null)
+                    if (livrosdisponiveis.Count == 0)
                     {
                         Console.WriteLine("Não há livros disponíveis!");
                         Thread.Sleep(2000);
+                        Console.Clear();
                     }
                     else
                     {
                         var disponivel = livrosdisponiveis.ToList();
                         disponivel.ForEach(item => Console.WriteLine(BsonSerializer.Deserialize<Books>(item.ToString())));
+                        Console.WriteLine();
 
                         //var livro = BsonSerializer.Deserialize<Books>(disponivel);
                         /*foreach (var disponivel in livrosdisponiveis)
@@ -140,6 +147,7 @@ internal class Program
                     {
                         Console.WriteLine("Não há livros emprestados!");
                         Thread.Sleep(2000);
+                        Console.Clear();
                     }
                     else
                     {
@@ -175,6 +183,7 @@ internal class Program
                     {
                         Console.WriteLine("Não há livros separados para leitura!");
                         Thread.Sleep(2000);
+                        Console.Clear();
                     }
                     else
                     {
@@ -184,25 +193,24 @@ internal class Program
                     break;
 
                 case 7:
-                    try
-                    {
+                    
                         Console.Write("\nInforme o nome do livro que deseja deletar: ");
                         var livrodeletar = Console.ReadLine();
 
                         var delete = collectionLivro.Find(Builders<BsonDocument>.Filter.Eq("Título", livrodeletar)).FirstOrDefault();
 
-                        collectionLivro.FindOneAndDelete(delete);
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"\nError: {ex}");
-                        Thread.Sleep(2000);
-                    }
-                    finally
-                    {
-                        Console.WriteLine("\nLivro deletado com sucesso!");
-                        Thread.Sleep(2000);
-                    }
+                        if (delete == null)
+                        {
+
+                            Console.WriteLine("Não há livros disponíveis para exclusão!");
+                        }
+                        else {
+
+                            collectionLivro.FindOneAndDelete(delete);
+                            Console.WriteLine("\nLivro deletado com sucesso!");
+                            Thread.Sleep(2000);
+                            Console.Clear();
+                        }
                     break;
             }
 
@@ -265,11 +273,13 @@ internal class Program
             {
                 Console.WriteLine("\nNão foi possível gravar!");
                 Thread.Sleep(2000);
+                Console.Clear();
             }
             finally
             {
                 Console.WriteLine("\nLivro cadastrado com sucesso!");
                 Thread.Sleep(2000);
+                Console.Clear();
             }
             return null;
         }
