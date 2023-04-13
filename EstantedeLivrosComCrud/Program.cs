@@ -126,6 +126,9 @@ internal class Program
                         var disponivel = livrosdisponiveis.ToList();
                         disponivel.ForEach(item => Console.WriteLine(BsonSerializer.Deserialize<Books>(item.ToString())));
                         Console.WriteLine();
+                        Console.Write("Precione qualquer tecla para retornar ao menu.");
+                        var retorno = Console.ReadKey();
+                        Console.Clear();
                     }
                     break;
 
