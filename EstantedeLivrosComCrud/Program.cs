@@ -126,14 +126,6 @@ internal class Program
                         var disponivel = livrosdisponiveis.ToList();
                         disponivel.ForEach(item => Console.WriteLine(BsonSerializer.Deserialize<Books>(item.ToString())));
                         Console.WriteLine();
-
-                        //var livro = BsonSerializer.Deserialize<Books>(disponivel);
-                        /*foreach (var disponivel in livrosdisponiveis)
-                        {
-                            var livro = BsonSerializer.Deserialize<Books>(disponivel);
-                            Console.WriteLine(livro.ToString());
-                            Console.WriteLine();
-                        }*/
                     }
                     break;
 
@@ -151,26 +143,38 @@ internal class Program
                     }
                     else
                     {
-                        listaEmprestado.ForEach(item => Console.WriteLine(BsonSerializer.Deserialize<Books>(item.ToString())));
-                        Console.WriteLine();
+                        //listaEmprestado.ForEach(item => Console.WriteLine(BsonSerializer.Deserialize<Books>(item.ToString())));
+                        //Console.WriteLine();
 
-                        /*Console.Write("\nDeseja devolver esse livro? (S ou N): ");
-                        var devolucao = Console.ReadLine().ToUpper();
-
-                        if(devolucao == "S")
+                        foreach (var emprestado in listaLivrosEmprestados)
                         {
-                            var devolucaoLivro = collectionEmprestado.Find(Builders<BsonDocument>.Filter.Eq("Título", item)).FirstOrDefault();
-                            collectionLivro.InsertOne(devolucaoLivro);
-                            //collectionEmprestado.Find(Builders<BsonDocument>.Filter.Eq("Título", item);
-                        }
-                    }
+                            var livroEmprestado = BsonSerializer.Deserialize<Books>(emprestado);
+                            Console.WriteLine(livroEmprestado.ToString());
+                            Console.WriteLine();
 
-                    foreach (var emprestado in listaLivrosEmprestados)
-                    {
-                        var livroEmprestado = BsonSerializer.Deserialize<Books>(emprestado);
-                        Console.WriteLine(livroEmprestado.ToString());
-                        Console.WriteLine();*/
-                    }
+                            Console.Write("\nDeseja devolver esse livro? (S ou N): ");
+                            var devolucao = Console.ReadLine().ToUpper();
+
+                            if(devolucao == "S")
+                            {
+                                collectionLivro.InsertOne(emprestado);
+                                collectionEmprestado.FindOneAndDelete(emprestado);
+                            }
+
+                        }
+
+                        Console.WriteLine();
+                        Thread.Sleep(1000);
+                        Console.Clear();
+
+                        
+
+                        //if(devolucao == "S")
+                        //{
+                          //  var devolucaoLivro = collectionEmprestado.Find(Builders<BsonDocument>.Filter.Eq("Título", item)).FirstOrDefault();
+                            //collectionLivro.InsertOne(devolucaoLivro);
+                            //collectionEmprestado.Find(Builders<BsonDocument>.Filter.Eq("Título", item);
+                    } 
                     break;
 
                 case 6:
@@ -203,6 +207,8 @@ internal class Program
                         {
 
                             Console.WriteLine("Não há livros disponíveis para exclusão!");
+                            Thread.Sleep(2000);
+                            Console.Clear();
                         }
                         else {
 
